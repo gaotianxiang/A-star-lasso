@@ -1,3 +1,9 @@
+import networks
+import os
+import pickle
+from utils import forward_sample
+from plot_network import plot_network
+
 Networks = ['tree', 'inversetree', 'factors', 'alarm', 'barley', 'carpo', 'chain',
             'hailfinder', 'insurance', 'mildew', 'water', 'vstructure', 'treebranch',
             'inversetreebranch', 'skinnytree', 'asia', 'dsep', 'bowling', 'funnel',
@@ -7,38 +13,34 @@ Networks = ['tree', 'inversetree', 'factors', 'alarm', 'barley', 'carpo', 'chain
 
 def gen_simu_data(net_id, num_sets, lower_bd, upper_bd, num_samples):
     name = Networks[net_id]
+    func_name = 'get_dag_{}'.format(name)
+    # adj_matrix, node_names, top_order = getattr(networks, func_name)
+    adj_matrix, node_names, top_order = networks.get_dag_asia()
 
+    q = len(node_names)
+    dir_name = './simdata'
+    os.makedirs(dir_name, exist_ok=True)
+    plot_network(adj_matrix, node_names, dir_name, name)
 
+    print('Generating data for network {}'.format(name))
 
-#
-# addpath ./networks
-# addpath ./utils
-# % addpath ../SBN/Toolbox/Causal_Explorer/Matlab_R14;
-# % addpath ../SBN/Toolbox/Causal_Explorer/Matlab_R14/Pcodes;
-# n = 2500; %number of samples
-#
-# name = Networks{netid};
-# netFunc = str2func(strcat('getDAG',name));
-# [Ayy,nodeNames,toporder] = netFunc(); %A for adjacency
-# q = length(nodeNames);
-#
-# dirname = './simdata';
-# for i = 1:q
-#     nodeNums{i} = int2str(i);
-# end
-#
-# %Use this if you want to visualize the network
-# plotNetwork(Ayy,nodeNums,dirname,name)
-#
-# disp(sprintf('Generating Data for Network %s.', name));
-# for i = 1:nsets
-#     msg = sprintf('Generating set %d.', i);
-#     disp(msg);
-#     filename = sprintf('%s/%s/%s_lb%dub%d_set%d.mat', dirname,name,name,lowerbd*10, upperbd*10,i);
-#     [Y, betatrue] = forwardSample(Ayy,toporder,n,q,lowerbd,upperbd);
-#     save(filename, 'Y', 'Ayy', 'toporder', 'name', 'lowerbd', 'upperbd', 'betatrue') ;
-#     clear Y;
-#     clear betatrue;
-# end
-#
-# end
+    for i in range(num_sets):
+        msg = 'generating set {}'.format(i)
+        print(msg)
+
+        file_name = os.path.join(dir_name, name, '{}_lb{}_ub{}_set{}.pkl'.format(name, lower_bd * 10,
+                                                                                 upper_bd * 10, i))
+        os.makedirs(os.path.dirname(file_name), exist_ok=True)
+        data, beta_true = forward_sample(adj_matrix, top_order, num_samples, q, lower_bd, upper_bd)
+
+        with open(file_name, 'wb+') as file:
+            content = {
+                'Y': data,
+                'Ayy': adj_matrix,
+                'toporder': top_order,
+                'name': name,
+                'lowerbd': lower_bd,
+                'upper': upper_bd,
+                'betature': beta_true
+            }
+            pickle.dump(content, file)

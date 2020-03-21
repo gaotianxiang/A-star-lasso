@@ -1,1 +1,2 @@
 from utils.topological_permutation import topological_permutation
+from utils.forward_sample import forward_sample
