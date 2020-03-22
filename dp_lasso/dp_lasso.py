@@ -24,7 +24,8 @@ def run_lasso(x, y, lambda_c):
 
 
 def list_to_key(vertex_path):
-    return '#'.join(sorted(vertex_path))
+    path = [str(x) for x in sorted(vertex_path)]
+    return '#'.join(path)
 
 
 def dp_lasso(data, lambda_c):
@@ -55,7 +56,7 @@ def dp_lasso(data, lambda_c):
         for p in range(len(queue)):
             parent = queue[p]
             # vertices_order = copy.deepcopy(parent.vertices_order)
-            candidate_children = remove(all_vertices, parent_vertices_order)
+            candidate_children = remove(all_vertices, parent.vertices_order)
 
             for i in range(len(candidate_children)):
                 child = candidate_children[i]
@@ -92,7 +93,7 @@ def dp_lasso(data, lambda_c):
 
                 g = curr_g + parent_g
 
-                key = list_to_key(parent_vertices_order)
+                key = list_to_key(vertices_order)
                 node = Node(child, vertices_order, parent_edge_path, parent_z, parent_beta_z, g)
 
                 if key not in history:
