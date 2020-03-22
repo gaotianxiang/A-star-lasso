@@ -1,2 +1,4 @@
 from utils.topological_permutation import topological_permutation
 from utils.forward_sample import forward_sample
+from utils.plot_network import plot_network
+from utils.gen_simu_data import gen_simu_data

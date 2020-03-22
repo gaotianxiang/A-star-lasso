@@ -1,6 +1,6 @@
 import argparse
 
-from gen_simu_data import gen_simu_data
+from utils import gen_simu_data
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--netid', default=15, type=int)

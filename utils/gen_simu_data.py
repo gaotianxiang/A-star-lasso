@@ -1,10 +1,11 @@
 import networks
 import os
 import pickle
-from utils import forward_sample
-from plot_network import plot_network
 
-Networks = ['tree', 'inversetree', 'factors', 'alarm', 'barley', 'carpo', 'chain',
+from utils import forward_sample
+from utils import plot_network
+
+networks = ['tree', 'inversetree', 'factors', 'alarm', 'barley', 'carpo', 'chain',
             'hailfinder', 'insurance', 'mildew', 'water', 'vstructure', 'treebranch',
             'inversetreebranch', 'skinnytree', 'asia', 'dsep', 'bowling', 'funnel',
             'insurancesmall', 'alarm300', 'walrus', 'shallow21', 'chain20', 'rain',
@@ -12,13 +13,13 @@ Networks = ['tree', 'inversetree', 'factors', 'alarm', 'barley', 'carpo', 'chain
 
 
 def gen_simu_data(net_id, num_sets, lower_bd, upper_bd, num_samples):
-    name = Networks[net_id]
+    name = networks[net_id]
     func_name = 'get_dag_{}'.format(name)
     # adj_matrix, node_names, top_order = getattr(networks, func_name)
     adj_matrix, node_names, top_order = networks.get_dag_asia()
 
     q = len(node_names)
-    dir_name = './simdata'
+    dir_name = '../simdata'
     os.makedirs(dir_name, exist_ok=True)
     plot_network(adj_matrix, node_names, dir_name, name)
 
