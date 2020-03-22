@@ -1,8 +1,13 @@
+import argparse
+
 from gen_simu_data import gen_simu_data
 
-net_id = 15
-num_sets = 10
-lower_bd = 0.5
-upper_bd = 1
-num_samples = 2500
-gen_simu_data(net_id, num_sets, lower_bd, upper_bd, num_samples)
+parser = argparse.ArgumentParser()
+parser.add_argument('--netid', default=15, type=int)
+parser.add_argument('--lower_bd', '--lbd', default=0.5, type=float)
+parser.add_argument('--upper_bd', '--ubp', default=1, type=float)
+parser.add_argument('--num_sets', default=10, type=int)
+parser.add_argument('--num_samples', '--n', default=2500, type=int)
+
+args = parser.parse_args()
+gen_simu_data(args.netid, args.num_sets, args.lower_bd, args.upper_bd, args.num_samples)
