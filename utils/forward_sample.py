@@ -18,6 +18,6 @@ def forward_sample(adj_matrix, top_order, num_samples, q, lower_bd, upper_bd):
         else:
             m = np.sum(data[:, pay] * beta_y[pay], axis=1).squeeze()
             data[:, curr] = np.random.normal(m, sigma)
-            beta_true[pay, j] = beta_y[pay]
+            beta_true[pay, curr] = beta_y[pay]
 
     return data, beta_y, beta_true
