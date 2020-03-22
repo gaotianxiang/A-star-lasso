@@ -1,9 +1,14 @@
+import argparse
+
 from dp_lasso import wrap_dp_lasso
 
-net_id = 15
-lambda_ = 0.3
-lower_bd = 0.5
-upper_bd = 1
-set_ = 0
-num_samples = 500
-wrap_dp_lasso(net_id, num_samples, lower_bd, upper_bd, lambda_, set_)
+parser = argparse.ArgumentParser()
+parser.add_argument('--netid', default=15, type=int)
+parser.add_argument('--lambda_', '--l', default=0.3, type=float)
+parser.add_argument('--lower_bd', '--lbd', default=0.5, type=float)
+parser.add_argument('--upper_bd', '--ubp', default=1, type=float)
+parser.add_argument('--set_', default=0, type=int)
+parser.add_argument('--num_samples', '--n', default=500, type=int)
+
+args = parser.parse_args()
+wrap_dp_lasso(args.netid, args.num_samples, args.lower_bd, args.upper_bd, args.lambda_, args.set_)
