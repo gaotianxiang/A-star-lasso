@@ -7,7 +7,7 @@ import seaborn as sns
 from dp_lasso import dp_lasso
 from dp_lasso.get_beta_least_sq import get_beta_least_sq
 
-Networks = ['tree', 'inversetree', 'factors', 'alarm', 'barley', 'carpo', 'chain',
+networks = ['tree', 'inversetree', 'factors', 'alarm', 'barley', 'carpo', 'chain',
             'hailfinder', 'insurance', 'mildew', 'water', 'vstructure', 'treebranch',
             'inversetreebranch', 'skinnytree', 'asia', 'dsep', 'bowling', 'funnel',
             'insurancesmall', 'alarm300', 'walrus', 'shallow21', 'chain20', 'rain',
@@ -19,7 +19,7 @@ def calculate_loss(data, beta):
 
 
 def wrap_dp_lasso(net_id, num_samples, lower_bd, upper_bd, lambda_, set_):
-    name = Networks[net_id]
+    name = networks[net_id]
     file_name = os.path.join('./simdata', name,
                              '{}_lb{}_ub{}_set{}.pkl'.format(name, lower_bd * 10, upper_bd * 10, set_))
     with open(file_name, 'rb') as file:
