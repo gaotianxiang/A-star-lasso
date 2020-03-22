@@ -31,7 +31,7 @@ def gen_simu_data(net_id, num_sets, lower_bd, upper_bd, num_samples):
         file_name = os.path.join(dir_name, name, '{}_lb{}_ub{}_set{}.pkl'.format(name, lower_bd * 10,
                                                                                  upper_bd * 10, i))
         os.makedirs(os.path.dirname(file_name), exist_ok=True)
-        data, beta_true = forward_sample(adj_matrix, top_order, num_samples, q, lower_bd, upper_bd)
+        data, beta_true, beta_matrix = forward_sample(adj_matrix, top_order, num_samples, q, lower_bd, upper_bd)
 
         with open(file_name, 'wb+') as file:
             content = {
@@ -41,6 +41,7 @@ def gen_simu_data(net_id, num_sets, lower_bd, upper_bd, num_samples):
                 'name': name,
                 'lowerbd': lower_bd,
                 'upper': upper_bd,
-                'betature': beta_true
+                'betature': beta_true,
+                'betamatrix': beta_matrix
             }
             pickle.dump(content, file)
