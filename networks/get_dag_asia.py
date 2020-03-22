@@ -3,7 +3,7 @@ import utils
 
 
 def get_dag_asia():
-    node_names = ['Y{}'.format(i) for i in range(1, 9)]
+    node_names = ['Y{}'.format(i) for i in range(8)]
 
     n = len(node_names)
     adj_matrix = np.zeros((n, n))
