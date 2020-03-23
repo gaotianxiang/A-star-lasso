@@ -1,4 +1,5 @@
 import heapq
+import pickle
 
 
 class Node:
@@ -29,3 +30,6 @@ heapq.heappush(a, Node(2, 3, 4))
 heapq.heappush(a, Node(1, 2))
 
 print(a)
+
+with open('./file.pkl', 'wb') as file:
+    pickle.dump(a, file)
