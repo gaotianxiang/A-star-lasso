@@ -22,3 +22,19 @@ solution.  However, it requires exponential time.
 ```
 python run_dp_lasso.py
 ```
+
+### Running A* Lasso 
+
+All the code for running A* Lasso is in the `a_star_lasso/` folder. There is a demo 
+called `run_astar_lasso.py` that you should run.  In the demo, you have the option to run: 
+
+-  A* Lasso - using `wrap_a_star_lasso.py `
+This runs the optimal A* Lasso.  
+``` 
+python run_astar_lasso.py
+```
+
+-  A* Lasso with Pruning - using wrapAstarLassoPrune.m  
+This uses our heuristic strategy to prune the queue so that the solution 
+is attained much faster without significant compromise in quality. You 
+should use this if the networks are larger than 20 nodes. 
