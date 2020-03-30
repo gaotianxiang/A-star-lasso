@@ -9,5 +9,11 @@ class Network:
         elif name == 'galaxy':
             from networks import get_dag_galaxy
             return get_dag_galaxy
+        elif name == 'inversetree':
+            from networks import get_dag_inversetree
+            return get_dag_inversetree
+        elif name == 'rain':
+            from networks import get_dag_rain
+            return get_dag_rain
         else:
             raise RuntimeError()
