@@ -30,10 +30,16 @@ def list_to_key(vertex_path):
     return '#'.join(path)
 
 
-def run_lasso(x, y, lambda_c):
+def run_lasso(data, parent_indices, child_indices, lambda_c):
+    parent_data = data[:, parent_indices]
+    y = data[:, child_indices]
     lasso = Lasso(alpha=lambda_c)
-    lasso.fit(x, y)
-    return lasso.coef_
+    lasso.fit(parent_data, y)
+
+    beta = lasso.coef_
+    y_diff = y - parent_data.dot(beta)
+    curr_g = y_diff.dot(y_diff) + lambda_c * np.sum(np.abs(beta))
+    return lasso.coef_, curr_g
 
 
 def remove(all_v, parent):
@@ -48,11 +54,11 @@ def get_h_score(data, lambda_c):
         # print('pre-computing score for vertex_{}'.format(j))
         mask = np.ones(q, dtype=np.bool)
         mask[j] = 0
-        y = data[:, j]
-        x = data[:, mask]
-        beta = run_lasso(x, y, lambda_c)
-        y_diff = y - x.dot(beta)
-        score = y_diff.dot(y_diff) + lambda_c * np.sum(np.abs(beta))
+        # y = data[:, j]
+        # x = data[:, mask]
+        beta, score = run_lasso(data, mask, j, lambda_c)
+        # y_diff = y - x.dot(beta)
+        # score = y_diff.dot(y_diff) + lambda_c * np.sum(np.abs(beta))
         pre_computed_lasso_scores.append(score)
         sum_score += score
 
@@ -102,17 +108,19 @@ def a_star_lasso(data, lambda_c):
                 curr_g = y.dot(y)
             else:
                 parent = cur_node.vertices_order
-                parent_data = data[:, parent]
+                # parent_data = data[:, parent]
 
-                beta_child = run_lasso(parent_data, y, lambda_c)
+                beta_child, curr_g = run_lasso(data, parent, child, lambda_c)
                 beta[parent, child] = beta_child
                 identity = beta_child != 0
                 adj_m[parent, child] = identity
 
-                y_diff = y - parent_data.dot(beta_child)
-                curr_g = y_diff.dot(y_diff) + lambda_c * np.sum(np.abs(beta_child))
+                # y_diff = y - parent_data.dot(beta_child)
+                # curr_g = y_diff.dot(y_diff) + lambda_c * np.sum(np.abs(beta_child))
             g_score += curr_g
             h_score -= pc_lasso_score[child]
 
             child_node = Node(child, vertices_order, edge_path, adj_m, beta, h_score, g_score)
             heapq.heappush(min_heap, child_node)
+            min_heap = min_heap[:200]
+            # heapq.heapify(min_heap)
